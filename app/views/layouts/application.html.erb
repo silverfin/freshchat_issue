@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FreshchatIssue</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", :media => "all", data: {turbolinks_track: "reload"} %>
+    <%= javascript_include_tag "application", data: {turbolinks_eval: false, turbolinks_track: "reload"} %>
+
+    <%= javascript_pack_tag 'application', defer: false, data: { turbolinks_eval: false, turbolinks_track: 'reload'} %>
+
+    <%= tag :meta, name: 'turbolinks-cache-control', content: 'cache' %>
+
+    <script>
+      var updateCounts = function() {
+        document.querySelector('#co-browsing-js').innerHTML = document.querySelectorAll('script[src*="co-browsing.js"]').length;
+        document.querySelector('#co-browsing-css').innerHTML = document.querySelectorAll('link[href*="cb.css"]').length;
+        document.querySelector('#widget-css').innerHTML = document.querySelectorAll('link[href*="widget.css"]').length;
+      }
+
+      var turbo_load_listener = function() {
+        console.log("turbo load");
+
+        setTimeout(function() {
+          updateCounts();
+        }, 3000);
+      };
+
+      document.addEventListener("turbolinks:load", turbo_load_listener);
+      document.removeEventListener("turbolinks:click", turbo_load_listener);
+
+      var turbo_click_listener = function() {
+        console.log("turbo click");
+      }
+
+      document.addEventListener("turbolinks:click", turbo_click_listener);
+    </script>
+  </head>
+
+  <body>
+    <div>
+      <%= link_to 'Page 1', { controller: :pages, action: :page_one } %>
+      <%= link_to 'Page 2', { controller: :pages, action: :page_two } %>
+    </div>
+
+    <%= yield %>
+
+    <br />
+    <br />
+    <div>
+      co-browsing.js: <span id="co-browsing-js"></span><br />
+      cb.css: <span id="co-browsing-css"></span><br />
+      widget.css: <span id="widget-css"></span><br />
+      window message eventlisteners: <code>getEventListeners(window).message.length</code>
+    </div>
+
+    <%= render 'layouts/trackers/freshdesk_chat_widget' %>
+    <%= render 'layouts/trackers/freshdesk_help_widget' %>
+
+    <script>
+      console.log("Body loaded");
+    </script>
+  </body>
+</html>
