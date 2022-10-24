@@ -12,6 +12,6 @@ async function back(page) {
 	await page.click('a[href="/pages/2"]');
 }
 
-const repeat = () => 5
+const repeat = () => 15
 
 module.exports = {action, back, url, repeat};

@@ -21,21 +21,12 @@
       }
 
       var turbo_load_listener = function() {
-        console.log("turbo load");
-
-        setTimeout(function() {
+        setInterval(function() {
           updateCounts();
-        }, 3000);
+        }, 500);
       };
 
       document.addEventListener("turbolinks:load", turbo_load_listener);
-      document.removeEventListener("turbolinks:click", turbo_load_listener);
-
-      var turbo_click_listener = function() {
-        console.log("turbo click");
-      }
-
-      document.addEventListener("turbolinks:click", turbo_click_listener);
     </script>
   </head>
 
@@ -43,24 +34,50 @@
     <div>
       <%= link_to 'Page 1', { controller: :pages, action: :page_one } %>
       <%= link_to 'Page 2', { controller: :pages, action: :page_two } %>
+      <%= link_to 'Page 3', { controller: :pages, action: :page_three } %>
+      <%= link_to 'Page 4', { controller: :pages, action: :page_four } %>
+      <%= link_to 'Page 5', { controller: :pages, action: :page_five } %>
     </div>
 
     <%= yield %>
 
     <br />
     <br />
+
+    <a data-behavior="sf-freshdesk-help-launcher"><u>Help!</u></a><br />
+    <a data-behavior="sf-freshdesk-chat-launcher"><u>Chat!</u></a><br />
+
+    <br />
+    <br />
     <div>
-      co-browsing.js: <span id="co-browsing-js"></span><br />
-      cb.css: <span id="co-browsing-css"></span><br />
-      widget.css: <span id="widget-css"></span><br />
-      window message eventlisteners: <code>getEventListeners(window).message.length</code>
+      <table>
+        <tr>
+          <td><strong>co-browsing.js</strong></td>
+          <td><code>document.querySelectorAll('script[src*="co-browsing.js"]').length</code></td>
+          <th><span id="co-browsing-js"></span></th>
+        </tr>
+        <tr>
+          <td><strong>cb.css</strong></td>
+          <td><code>document.querySelectorAll('link[href*="cb.css"]').length</code></td>
+          <th><span id="co-browsing-css"></span></th>
+        </tr>
+        <tr>
+          <td><strong>widget.css</strong></td>
+          <td><code>document.querySelectorAll('link[href*="widget.css"]').length</code></td>
+          <th><span id="widget-css"></span></th>
+        </tr>
+        <tr>
+          <td><strong>window message eventlisteners</strong></td>
+          <td colspan="2"><code>getEventListeners(window).message.length</code></td>
+        </tr>
+      </table>
     </div>
 
     <%= render 'layouts/trackers/freshdesk_chat_widget' %>
     <%= render 'layouts/trackers/freshdesk_help_widget' %>
 
     <script>
-      console.log("Body loaded");
+      // console.log("Body loaded");
     </script>
   </body>
 </html>

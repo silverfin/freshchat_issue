@@ -30,17 +30,13 @@ const customizeFreshdeskWidget = function() {
   window.FreshworksWidget("hide", "ticketForm", ["name", "email"])
 }
 
-// document.addEventListener('turbolinks:click', function() {
-//   if (document.body.dataset.freshdeskEnabled !== "true") {
-//     return
-//   }
-//
-//   try {
-//     window.FreshworksWidget?.('destroy')
-//   } catch(e) {
-//     //error in destroy can be ignored since destroy will fail if called before init
-//   }
-// })
+document.addEventListener('turbolinks:visit', function() {
+  try {
+    window.FreshworksWidget?.('destroy')
+  } catch(e) {
+    //error in destroy can be ignored since destroy will fail if called before init
+  }
+})
 
 document.addEventListener('turbolinks:load', function() {
   if(isFDWidgetInitializationInProgress()) {
@@ -50,12 +46,6 @@ document.addEventListener('turbolinks:load', function() {
 
   const scriptTag = document.getElementById('freshdesk-help-widget-js')
   scriptTag && scriptTag.remove()
-
-  try {
-    window.FreshworksWidget?.('destroy')
-  } catch(e) {
-    //error in destroy can be ignored since destroy will fail if called before init
-  }
 
   /*
    * Purge the function `window.FreshworksWidget`. It will be initialized
@@ -91,7 +81,8 @@ document.addEventListener('turbolinks:load', function() {
   const script = document.createElement('script')
   script.type = 'text/javascript'
   script.id = 'freshdesk-help-widget-js'
-  script.src = 'https://euc-widget.freshworks.com/widgets/101000001762.js'
+  // script.src = 'https://euc-widget.freshworks.com/widgets/101000001762.js'
+  script.src = "http://localhost:3000" + window.freshdeskWidgetData.script_path
   document.head.appendChild(script)
   
   customizeFreshdeskWidget()

@@ -33,21 +33,15 @@ function initializeFreshworksChat(document, tag) {
   const element = document.createElement("script")
   element.id = tag
   element.async = false
-  element.src = "https://wchat.eu.freshchat.com/js/widget.js"
+  // element.src = "https://wchat.eu.freshchat.com/js/widget.js"
+  element.src = "http://localhost:3000" + window.freshdeskChatSettings.script_path
   element.onload = configureFreshworksChat
   document.body.appendChild(element)
 }
 
-function destroyFreshchat() {
-  /*
-  ** Ensures the widget is destroyed and eventListeners added on the window
-  ** are removed.
-  */
-  // window.fcWidget.destroy()
-}
-
 function flushFreshchat() {
   window.fcWidget.destroy()
+  window.fcSettings = null
   window.fcWidget = null
   delete window.history.pushState_fc_observer
   delete window.history.replaceState_fc_observer
@@ -66,16 +60,39 @@ function flushFreshchat() {
   delete window.history.replaceState
 }
 
+// Before page is cached
+document.addEventListener("turbolinks:before-cache", function() {
+  const scriptTag = document.getElementById(freshChatScriptTagId)
+  scriptTag.parentNode.removeChild(scriptTag)
+  document.querySelectorAll('link[href*="widget.css"]').forEach(l => l.parentNode.removeChild(l))
+  document.querySelectorAll('link[href*="cb.css"]').forEach(l => l.parentNode.removeChild(l))
+})
+
+// After turbolinks loaded
 document.addEventListener("turbolinks:load", function() {
+  console.log("turbolinks:load")
   if(window.fcWidget) { flushFreshchat() }
   initializeFreshworksChat(document, freshChatScriptTagId)
 })
 
-document.addEventListener("turbolinks:before-cache", function() {
-  const scriptTag = document.getElementById(freshChatScriptTagId)
-  scriptTag.parentNode.removeChild(scriptTag)
+var destroyFreshchat = function(e) {
+  console.log(e);
+
+  if(window.fcWidget) {
+    console.log("Content window:")
+    console.log(document.querySelector('#fc_widget').contentWindow)
+    document.querySelector('#fc_widget').contentWindow.postMessage({action: 'push_subscribe_destroy'}, "https://wchat.eu.freshchat.com")
+
+    console.log("Sending destroy to the widget")
+    window.fcWidget.destroy()
+  } else {
+    console.warn("No widget found?!")
+  }
+}
+
+// Navigating away
+document.addEventListener("turbolinks:visit", function() {
+  console.log("turbolinks:visit")
+  destroyFreshchat()
 })
 
-document.addEventListener("turbolinks:click", function() {
-  if(window.fcWidget) { destroyFreshchat() }
-})
