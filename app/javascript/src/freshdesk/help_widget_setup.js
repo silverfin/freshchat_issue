@@ -30,14 +30,6 @@ const customizeFreshdeskWidget = function() {
   window.FreshworksWidget("hide", "ticketForm", ["name", "email"])
 }
 
-document.addEventListener('turbolinks:visit', function() {
-  try {
-    window.FreshworksWidget?.('destroy')
-  } catch(e) {
-    //error in destroy can be ignored since destroy will fail if called before init
-  }
-})
-
 document.addEventListener('turbolinks:load', function() {
   if(isFDWidgetInitializationInProgress()) {
     // can skip script re addition since the previous widget load initialization is still in progress
@@ -46,6 +38,12 @@ document.addEventListener('turbolinks:load', function() {
 
   const scriptTag = document.getElementById('freshdesk-help-widget-js')
   scriptTag && scriptTag.remove()
+
+  try {
+    window.FreshworksWidget?.('destroy')
+  } catch(e) {
+    //error in destroy can be ignored since destroy will fail if called before init
+  }
 
   /*
    * Purge the function `window.FreshworksWidget`. It will be initialized
