@@ -62,12 +62,7 @@ function flushFreshchat() {
 // Navigating to another page
 document.addEventListener("turbolinks:visit", function() {
   if(window.fcWidget) {
-    // console.log("postmessage from own code")
-    // document.querySelector('#fc_widget').contentWindow.postMessage({action: "push_subscribe_destroy"}, "https://wchat.eu.freshchat.com")
-    // console.log("------------")
-
-    // console.log("Sending destroy to the widget")
-    // window.fcWidget.destroy()
+     window.fcWidget.syncDestroy()
   } else {
     console.warn("No widget found!")
   }
@@ -78,9 +73,9 @@ document.addEventListener("turbolinks:before-cache", function() {
   const scriptTag = document.getElementById(freshChatScriptTagId)
   scriptTag.parentNode.removeChild(scriptTag)
 
-  // // Remove css that will be re-added when loading the widget
-  // document.querySelectorAll('link[href*="widget.css"]').forEach(l => l.parentNode.removeChild(l))
-  // document.querySelectorAll('link[href*="cb.css"]').forEach(l => l.parentNode.removeChild(l))
+  // Remove css that will be re-added when loading the widget
+  document.querySelectorAll('link[href*="widget.css"]').forEach(l => l.parentNode.removeChild(l))
+  document.querySelectorAll('link[href*="cb.css"]').forEach(l => l.parentNode.removeChild(l))
 })
 
 // After turbolinks loaded
