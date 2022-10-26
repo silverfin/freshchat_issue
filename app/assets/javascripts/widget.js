@@ -545,11 +545,13 @@
           e && t && "function" == typeof e && e(t)
         },
         unload: function() {
-          console.log("unloading")
+          // console.log("---------------")
+          // console.log("postmessage from widget code")
+          // debugger;
           this.postMessage({
             action: "push_subscribe_destroy"
           })
-          console.log("unloaded")
+          // console.log("---------------")
         },
         add: function() {
           var t = document
@@ -1348,19 +1350,20 @@
         },
         onCustomMessage: function(e) {},
         onMessage: function(n) {
+          // debugger;
           var i = this
             , a = n.origin || n.originalEvent.origin
             , s = o.getConfig()
             , r = s && s.cssNames;
+
           if (a === w.getHost() || a === x.getHostOrigin()) {
-            var d = n.data
-              , c = d && d.action;
-            if (this.updateFrameSettings(d.settingsPayload),
-              c) {
+            var d = n.data, c = d && d.action;
+
+            if (this.updateFrameSettings(d.settingsPayload), c) {
               var l, u, f = document.getElementById(e.frameDivId), h = r && r.expanded || "expanded", p = w.checkIfMultiWidget(), g = w.getSettings(), m = null == g || null === (l = g.appearanceConfig) || void 0 === l ? void 0 : l.widgetRightOffsetPx, b = "BOTTOM_LEFT" === (null == g || null === (u = g.appearanceConfig) || void 0 === u ? void 0 : u.widgetPosition);
               switch (c) {
                 case "push_subscribe_destroy_response":
-                  debugger;
+                  // debugger;
                   console.log("Got push_subscribe_destroy_response");
                   this.unloadWidget();
                   break;

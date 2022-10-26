@@ -11,7 +11,7 @@
 
     <%= javascript_pack_tag 'application', defer: false, data: { turbolinks_eval: false, turbolinks_track: 'reload'} %>
 
-    <%= tag :meta, name: 'turbolinks-cache-control', content: 'cache' %>
+    <%= tag :meta, name: 'turbolinks-cache-control', content: 'no-preview' %>
 
     <script>
       var updateCounts = function() {
@@ -54,17 +54,17 @@
         <tr>
           <td><strong>co-browsing.js</strong></td>
           <td><code>document.querySelectorAll('script[src*="co-browsing.js"]').length</code></td>
-          <th><span id="co-browsing-js"></span></th>
+          <th align="right"><span id="co-browsing-js"></span></th>
         </tr>
         <tr>
           <td><strong>cb.css</strong></td>
           <td><code>document.querySelectorAll('link[href*="cb.css"]').length</code></td>
-          <th><span id="co-browsing-css"></span></th>
+          <th align="right"><span id="co-browsing-css"></span></th>
         </tr>
         <tr>
           <td><strong>widget.css</strong></td>
           <td><code>document.querySelectorAll('link[href*="widget.css"]').length</code></td>
-          <th><span id="widget-css"></span></th>
+          <th align="right"><span id="widget-css"></span></th>
         </tr>
         <tr>
           <td><strong>window message eventlisteners</strong></td>

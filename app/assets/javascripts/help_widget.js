@@ -282,7 +282,6 @@ var FwBootstrap = function(e) {
       unbindMessageHandler: function() {
         this.postMessageHandlerBound && (this.postMessageHandlerBound = !1,
           window.removeEventListener ? window.removeEventListener("message", this.messageHandler, !0) : window.detachEvent("message", this.messageHandler, !0))
-        console.log("Unbound!");
       },
       handleMessage: function(e) {
         var t = e.data
