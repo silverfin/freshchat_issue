@@ -59,10 +59,22 @@ function flushFreshchat() {
   delete window.history.replaceState
 }
 
-// Before page is cached
+// Navigating to another page
+document.addEventListener("turbolinks:visit", function() {
+  if(window.fcWidget) {
+    window.fcWidget.destroy()
+  } else {
+    console.warn("No widget found!")
+  }
+})
+
 document.addEventListener("turbolinks:before-cache", function() {
   const scriptTag = document.getElementById(freshChatScriptTagId)
   scriptTag.parentNode.removeChild(scriptTag)
+
+  // Remove css that will be re-added when loading the widget
+  document.querySelectorAll('link[href*="widget.css"]').forEach(l => l.parentNode.removeChild(l))
+  document.querySelectorAll('link[href*="cb.css"]').forEach(l => l.parentNode.removeChild(l))
 })
 
 // After turbolinks loaded

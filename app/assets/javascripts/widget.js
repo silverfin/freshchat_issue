@@ -1456,6 +1456,7 @@
                     });
                   break;
                 case "frame_state_change":
+                  console.log("frame_state_change");
                   var A = document.getElementById(e.frameDivId)
                     , R = d && d.data
                     , U = R && R.frameState
