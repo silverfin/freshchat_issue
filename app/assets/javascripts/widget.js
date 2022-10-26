@@ -2336,6 +2336,11 @@
           x.unload(),
             w.unload()
         },
+        syncDestroy: function() {
+          x.unload(),
+            w.unload(),
+            R.unloadWidget()
+        },
         isOpen: function() {
           return t.isOpened()
         },

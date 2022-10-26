@@ -62,7 +62,7 @@ function flushFreshchat() {
 // Navigating to another page
 document.addEventListener("turbolinks:visit", function() {
   if(window.fcWidget) {
-    window.fcWidget.destroy()
+    window.fcWidget.syncDestroy()
   } else {
     console.warn("No widget found!")
   }
