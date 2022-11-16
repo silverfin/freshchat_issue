@@ -4,7 +4,7 @@ function configureFreshworksChat() {
   window.fcWidget.init({
     config: {
       headerProperty: {
-        hideChatButton: true
+        hideChatButton: false
       }
     },
     token: "f2510e46-539e-4f37-92c2-0a16e7b9447c",
@@ -16,6 +16,7 @@ function configureFreshworksChat() {
   window.fcWidget.user.setFirstName(window.freshdeskChatSettings.firstName)
   window.fcWidget.user.setEmail(window.freshdeskChatSettings.email)
 }
+
 
 function initializeFreshworksChat(document, tag) {
   window.fcSettings = {
@@ -39,6 +40,7 @@ function initializeFreshworksChat(document, tag) {
   document.body.appendChild(element)
 }
 
+
 function flushFreshchat() {
   window.fcSettings = null
   window.fcWidget = null
@@ -61,8 +63,11 @@ function flushFreshchat() {
 
 // Before page is cached
 document.addEventListener("turbolinks:before-cache", function() {
-  const scriptTag = document.getElementById(freshChatScriptTagId)
-  scriptTag.parentNode.removeChild(scriptTag)
+   window.fcWidget.destroy()
+  let s=document.querySelectorAll('link[href*="widget.css"]');
+  s[0].id="css";
+  document.getElementById("css").remove()
+    // scriptTag.parentNode.removeChild(scriptTag)
 })
 
 // After turbolinks loaded
