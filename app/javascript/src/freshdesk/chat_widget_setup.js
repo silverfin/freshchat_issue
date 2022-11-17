@@ -15,25 +15,21 @@ function configureFreshworksChat() {
   window.fcWidget.setExternalId(window.freshdeskChatSettings.externalId)
   window.fcWidget.user.setFirstName(window.freshdeskChatSettings.firstName)
   window.fcWidget.user.setEmail(window.freshdeskChatSettings.email)
+  window.fcWidget.on("widget:loaded", function(resp) {
+    console.log('Widget Loaded callback')
+    window.fcWidget.on("widget:destroyed", function() {
+      console.log('Widget destroyed callback')
+      if(window.fcWidget) { flushFreshchat() }
+    })
+  })
 }
 
 
 function initializeFreshworksChat(document, tag) {
-  window.fcSettings = {
-    onInit: function() {
-      window.fcWidget.on("widget:destroyed", function() {
-        console.log('Widget destroyed callback')
-      })
-
-      window.fcWidget.on("widget:loaded", function(resp) {
-        console.log('Widget Loaded callback')
-      })
-    }
-  }
 
   const element = document.createElement("script")
   element.id = tag
-  element.async = false
+  element.async =true;
   // element.src = "https://wchat.eu.freshchat.com/js/widget.js"
   element.src = "http://localhost:3000" + window.freshdeskChatSettings.script_path
   element.onload = configureFreshworksChat
@@ -42,6 +38,7 @@ function initializeFreshworksChat(document, tag) {
 
 
 function flushFreshchat() {
+  window.fcWidget?.destroy();
   window.fcSettings = null
   window.fcWidget = null
   delete window.history.pushState_fc_observer
@@ -63,17 +60,25 @@ function flushFreshchat() {
 
 // Before page is cached
 document.addEventListener("turbolinks:before-cache", function() {
-   window.fcWidget.destroy()
+  console.log("turbolinks:before")
   let s=document.querySelectorAll('link[href*="widget.css"]');
   s[0].id="css";
   document.getElementById("css").remove()
-    // scriptTag.parentNode.removeChild(scriptTag)
+})
+
+document.addEventListener("turbolinks:visit", function() {
+  if(window.fcWidget) {
+    window.fcWidget.destroy();
+  } else {
+    console.warn("No widget found!")
+  }
 })
 
 // After turbolinks loaded
 document.addEventListener("turbolinks:load", function() {
-  console.log("turbolinks:load")
-  if(window.fcWidget) { flushFreshchat() }
-  initializeFreshworksChat(document, freshChatScriptTagId)
+  console.log("turbolinks:load");
+  setTimeout(() => {
+    initializeFreshworksChat(document, freshChatScriptTagId)
+  }, 500)
 })
 
