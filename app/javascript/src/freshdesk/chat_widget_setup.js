@@ -26,6 +26,7 @@ function initializeFreshworksChat(document, tag) {
 
       window.fcWidget.on("widget:loaded", function(resp) {
         console.log('Widget Loaded callback')
+        window.fcWidget.open()
       })
     }
   }
@@ -62,13 +63,22 @@ function flushFreshchat() {
 // Before page is cached
 document.addEventListener("turbolinks:before-cache", function() {
   const scriptTag = document.getElementById(freshChatScriptTagId)
-  scriptTag.parentNode.removeChild(scriptTag)
+  if(scriptTag) scriptTag.parentNode.removeChild(scriptTag)
 })
 
 // After turbolinks loaded
 document.addEventListener("turbolinks:load", function() {
   console.log("turbolinks:load")
   if(window.fcWidget) { flushFreshchat() }
-  initializeFreshworksChat(document, freshChatScriptTagId)
+
+  // initializeFreshworksChat(document, freshChatScriptTagId)
+
+  document.querySelector("[data-behavior='sf-freshdesk-chat-launcher']").onclick = function(e) {
+    e.preventDefault()
+
+    window.FreshworksWidget("close")
+
+    initializeFreshworksChat(document, freshChatScriptTagId)
+  }
 })
 

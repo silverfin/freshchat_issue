@@ -5,12 +5,5 @@ document.addEventListener("turbolinks:load", function() {
     window.FreshworksWidget("open")
     window.fcWidget.close()
   }
-
-  document.querySelector("[data-behavior='sf-freshdesk-chat-launcher']").onclick = function(e) {
-    e.preventDefault()
-
-    window.fcWidget.open()
-    window.FreshworksWidget("close")
-  }
 });
 
