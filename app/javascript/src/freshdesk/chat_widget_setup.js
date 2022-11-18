@@ -59,15 +59,24 @@ function flushFreshchat() {
   delete window.history.replaceState
 }
 
+// Navigating to another page
+document.addEventListener("turbo:visit", function() {
+  if(window.fcWidget) {
+    window.fcWidget.destroy()
+  } else {
+    console.warn("No widget found!")
+  }
+})
+
 // Before page is cached
-document.addEventListener("turbolinks:before-cache", function() {
+document.addEventListener("turbo:before-cache", function() {
   const scriptTag = document.getElementById(freshChatScriptTagId)
   scriptTag.parentNode.removeChild(scriptTag)
 })
 
 // After turbolinks loaded
-document.addEventListener("turbolinks:load", function() {
-  console.log("turbolinks:load")
+document.addEventListener("turbo:load", function() {
+  console.log("turbo:load")
   if(window.fcWidget) { flushFreshchat() }
   initializeFreshworksChat(document, freshChatScriptTagId)
 })

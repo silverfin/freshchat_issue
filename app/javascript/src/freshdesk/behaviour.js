@@ -1,4 +1,4 @@
-document.addEventListener("turbolinks:load", function() {
+document.addEventListener("turbo:load", function() {
   document.querySelector("[data-behavior='sf-freshdesk-help-launcher']").onclick = function(e) {
     e.preventDefault()
 

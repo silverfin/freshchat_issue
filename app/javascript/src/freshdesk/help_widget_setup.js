@@ -30,7 +30,7 @@ const customizeFreshdeskWidget = function() {
   window.FreshworksWidget("hide", "ticketForm", ["name", "email"])
 }
 
-document.addEventListener('turbolinks:visit', function() {
+document.addEventListener('turbo:visit', function() {
   try {
     window.FreshworksWidget?.('destroy')
   } catch(e) {
@@ -38,7 +38,7 @@ document.addEventListener('turbolinks:visit', function() {
   }
 })
 
-document.addEventListener('turbolinks:load', function() {
+document.addEventListener('turbo:load', function() {
   if(isFDWidgetInitializationInProgress()) {
     // can skip script re addition since the previous widget load initialization is still in progress
     return

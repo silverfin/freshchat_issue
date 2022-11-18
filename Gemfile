@@ -63,4 +63,5 @@ group :test do
 end
 
 gem "shakapacker", "= 6.5"
-gem "turbolinks", github: "turbolinks/turbolinks-rails"
+
+gem 'turbo-rails'
