@@ -10,4 +10,10 @@ Rails.application.routes.draw do
       get '/5', to: 'pages#page_five'
     end
   end
+
+  resources :workaround do
+    collection do
+      get '/workaround_source', to: 'workaround#workaround_source'
+    end
+  end
 end

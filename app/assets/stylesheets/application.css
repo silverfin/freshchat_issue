@@ -14,3 +14,32 @@
  *= require_self
  */
 
+
+#freshchat_workaround_div {
+    opacity: 0;
+
+    width: 0;
+    height: 75px;
+    min-height: 73px;
+    min-width: 65px;
+
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    z-index: 2147483600;
+}
+
+#freshchat_workaround_div.open {
+    opacity: 1;
+    height: 820px;
+    width: 422px;
+}
+
+#freshchat_workaround {
+    border: 0;
+    min-height: auto;
+    min-width: auto;
+    height: 100%;
+    width: 100%;
+}

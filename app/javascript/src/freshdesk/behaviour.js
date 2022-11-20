@@ -5,7 +5,9 @@ document.addEventListener("turbolinks:load", function() {
     e.preventDefault()
 
     window.FreshworksWidget("open")
+
     getWorkaroundWindow().fcWidget.close()
+    document.getElementById('freshchat_workaround_div').classList.remove('open')
   }
 
   document.querySelector("[data-behavior='sf-freshdesk-chat-launcher']").onclick = function(e) {
@@ -13,6 +15,8 @@ document.addEventListener("turbolinks:load", function() {
 
     getWorkaroundWindow().fcWidget.open()
     window.FreshworksWidget("close")
+
+    document.getElementById('freshchat_workaround_div').classList.add('open')
   }
 });
 
