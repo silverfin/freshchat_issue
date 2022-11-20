@@ -1,7 +1,12 @@
 const freshChatScriptTagId = "freshchat-js-sdk"
 
+export function getWorkaroundWindow() {
+  return document.getElementById('freshchat_workaround').contentWindow
+}
+
 function configureFreshworksChat() {
-  window.fcWidget.init({
+  const workaroundWindow = getWorkaroundWindow()
+  workaroundWindow.fcWidget.init({
     config: {
       headerProperty: {
         hideChatButton: true
@@ -12,9 +17,9 @@ function configureFreshworksChat() {
     locale: 'nl',
   })
 
-  window.fcWidget.setExternalId(window.freshdeskChatSettings.externalId)
-  window.fcWidget.user.setFirstName(window.freshdeskChatSettings.firstName)
-  window.fcWidget.user.setEmail(window.freshdeskChatSettings.email)
+  workaroundWindow.fcWidget.setExternalId(window.freshdeskChatSettings.externalId)
+  workaroundWindow.fcWidget.user.setFirstName(window.freshdeskChatSettings.firstName)
+  workaroundWindow.fcWidget.user.setEmail(window.freshdeskChatSettings.email)
 }
 
 function initializeFreshworksChat(document, tag) {
@@ -30,20 +35,23 @@ function initializeFreshworksChat(document, tag) {
     }
   }
 
-  const element = document.createElement("script")
+  const workaround_iframe_document = document.getElementById('freshchat_workaround').contentWindow.document
+  const element = workaround_iframe_document.createElement("script")
   element.id = tag
   element.async = false
   // element.src = "https://wchat.eu.freshchat.com/js/widget.js"
   element.src = "http://localhost:3000" + window.freshdeskChatSettings.script_path
   element.onload = configureFreshworksChat
-  document.body.appendChild(element)
+  workaround_iframe_document.body.appendChild(element)
 }
 
 function flushFreshchat() {
-  window.fcSettings = null
-  window.fcWidget = null
-  delete window.history.pushState_fc_observer
-  delete window.history.replaceState_fc_observer
+  const workaround_window = getWorkaroundWindow()
+
+  workaround_window.fcSettings = null
+  workaround_window.fcWidget = null
+  delete workaround_window.history.pushState_fc_observer
+  delete workaround_window.history.replaceState_fc_observer
   /*
   ** The following two lines restore the original values of `pushState` and `replaceState` that
   ** the freshdesk script overwrote. The freshdesk widget doesn't expose an API to
@@ -55,8 +63,8 @@ function flushFreshchat() {
   ** has an effect on own properties)
   ** (source: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/delete)
   */
-  delete window.history.pushState
-  delete window.history.replaceState
+  delete workaround_window.history.pushState
+  delete workaround_window.history.replaceState
 }
 
 // Before page is cached
@@ -68,7 +76,7 @@ document.addEventListener("turbolinks:before-cache", function() {
 // After turbolinks loaded
 document.addEventListener("turbolinks:load", function() {
   console.log("turbolinks:load")
-  if(window.fcWidget) { flushFreshchat() }
+  if(getWorkaroundWindow().fcWidget) { flushFreshchat() }
   initializeFreshworksChat(document, freshChatScriptTagId)
 })
 
