@@ -9,7 +9,7 @@ function configureFreshworksChat() {
   workaroundWindow.fcWidget.init({
     config: {
       headerProperty: {
-        hideChatButton: true
+        hideChatButton: false
       }
     },
     token: "f2510e46-539e-4f37-92c2-0a16e7b9447c",
@@ -23,13 +23,13 @@ function configureFreshworksChat() {
 }
 
 function initializeFreshworksChat(document, tag) {
-  window.fcSettings = {
+  getWorkaroundWindow().fcSettings = {
     onInit: function() {
-      window.fcWidget.on("widget:destroyed", function() {
+      getWorkaroundWindow().fcWidget.on("widget:destroyed", function() {
         console.log('Widget destroyed callback')
       })
 
-      window.fcWidget.on("widget:loaded", function(resp) {
+      getWorkaroundWindow().fcWidget.on("widget:loaded", function(resp) {
         console.log('Widget Loaded callback')
       })
     }
